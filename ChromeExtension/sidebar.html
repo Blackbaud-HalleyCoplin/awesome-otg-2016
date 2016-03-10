@@ -1,60 +1,62 @@
-<div class="row">
-  <div class="col-xs-12">
-    <h1>{{ name }}</h1>
-    <div class="constituent-summary-info">
-      <span class="summary-title">Spouse: </span><span><a target="_blank" href="{{spouseRecordUrl}}">{{spouseName}}</a></span>
+<div class="bb-constituent-sidebar">
+    <div class="row">
+    <div class="col-xs-12">
+        <h1>{{ name }}</h1>
+        <div class="constituent-summary-info">
+        <span class="summary-title">Spouse: </span><span><a target="_blank" href="{{spouseRecordUrl}}">{{spouseName}}</a></span>
+        </div>
+        <div class="bb-constituent-summary-data-item">
+        <div class="bb-constituent-codes-title">{{constituentCodes}}</div>
+        </div>
+        <div class="">
+        <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a>
+        </div>
+        <div class="">
+        <a href="{{website}}">Website</a>
+        </div>
+        <div class="fullrecord">
+        <a target="_blank" href="{{constituentRecordUrl}}">View full record</a>
+        </div>
+        <hr class="">
     </div>
-    <div class="bb-constituent-summary-data-item">
-      <div class="bb-constituent-codes-title">{{constituentCodes}}</div>
     </div>
-    <div class="">
-      <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a>
+    <div class="row">
+    <div class="col-xs-12">
+        {{#lastAction}}
+        <h2>Last action</h2>
+        <ul class="act_list">
+        <li>
+            <span class="title">{{lastAction.type}}</span>
+            <span class="date">{{lastAction.date}}</span>
+            <span class="summary">{{lastAction.summary}}</span>
+        </li>
+        </ul>
+        {{/lastAction}}
+        {{#nextAction}}
+        <h2>Next action</h2>
+        <ul class="act_list">
+        <li>
+            <span class="title">{{nextAction.type}}</span>
+            <span class="date">{{nextAction.date}}</span>
+            <span class="summary">{{nextAction.summary}}</span>
+        </li>
+        </ul>
+        {{/nextAction}}
+        <hr>
     </div>
-    <div class="">
-      <a href="{{website}}">Website</a>
     </div>
-    <div class="fullrecord">
-      <a target="_blank" href="{{constituentRecordUrl}}">View full record</a>
+    <div class="row">
+    <div class="col-xs-12">
+        {{#lastNote}}
+        <h2>Last note</h2>
+        <ul class="act_list">
+        <li>
+            <span class="title">{{lastNote.type}}</span>
+            <span class="date">{{lastNote.date}}</span>
+            <span class="summary">{{lastNote.summary}}</span>
+        </li>
+        </ul>
+        {{/lastNote}}
     </div>
-    <hr class="">
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    {{#lastAction}}
-    <h2>Last action</h2>
-    <ul class="act_list">
-      <li>
-        <span class="title">{{lastAction.type}}</span>
-        <span class="date">{{lastAction.date}}</span>
-        <span class="summary">{{lastAction.summary}}</span>
-      </li>
-    </ul>
-    {{/lastAction}}
-    {{#nextAction}}
-    <h2>Next action</h2>
-    <ul class="act_list">
-      <li>
-        <span class="title">{{nextAction.type}}</span>
-        <span class="date">{{nextAction.date}}</span>
-        <span class="summary">{{nextAction.summary}}</span>
-      </li>
-    </ul>
-    {{/nextAction}}
-    <hr>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    {{#lastNote}}
-    <h2>Last note</h2>
-    <ul class="act_list">
-      <li>
-        <span class="title">{{lastNote.type}}</span>
-        <span class="date">{{lastNote.date}}</span>
-        <span class="summary">{{lastNote.summary}}</span>
-      </li>
-    </ul>
-    {{/lastNote}}
-  </div>
+    </div>
 </div>

@@ -51,7 +51,7 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
                     website: "http://blackbaud.com",
                     spouseName: "Wendy Hernandez",
                     spouseRecordUrl: "http://rexdev.blackbaud.com/constituents/410",
-                    constituentCodes: "Major Donor Prsopect, Board Chair",
+                    constituentCodes: "Major Donor Prospect, Board Chair",
                     lastAction: {
                         type: "Meeting - Face to Face",
                         date: "1/2/2015",
