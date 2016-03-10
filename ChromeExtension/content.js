@@ -9,7 +9,7 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
             threadView.addSidebarContentPanel({
                el: threadSidebars.get(threadView),
                title: "Constituent Data",
-               iconUrl: chrome.runtime.getURL('stripe.png') 
+               iconUrl: chrome.runtime.getURL('bbicon.png') 
             });
         }
         
