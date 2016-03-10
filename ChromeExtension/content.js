@@ -38,9 +38,10 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
         }
         
         var loadedConstituents = threadLoadedConstituents.get(threadView);
+        var usersEmail = sdk.User.getEmailAddress();
         
         for (var i = 0;i<possibleConstituents.length;i++) {
-            if ($.inArray(possibleConstituents[i].name, loadedConstituents) === -1) {
+            if ($.inArray(possibleConstituents[i].name, loadedConstituents) === -1 && usersEmail !== possibleConstituents[i].emailAddress) {
                 loadedConstituents.push(possibleConstituents[i].name);
                 
                 showSidebar(threadView, {
