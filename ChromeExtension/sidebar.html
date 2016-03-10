@@ -1,69 +1,60 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>sidebar example</title>
-  <link rel="stylesheet" href="sky-chrome-extension.css">
-</head>
-<body>
 <div class="row">
   <div class="col-xs-12">
-    <p>Blackbaud</p>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <h1>{{ name }}%></h1>
+    <h1>{{ name }}</h1>
     <div class="constituent-summary-info">
-      <span class="summary-title">Spouse: </span><span><a href="">Name of Spouse</a></span>
+      <span class="summary-title">Spouse: </span><span><a target="_blank" href="{{spouseRecordUrl}}">{{spouseName}}</a></span>
     </div>
     <div class="bb-constituent-summary-data-item">
-      <div class="bb-constituent-codes-title">Major Donor Prospect, Board Chair</div>
+      <div class="bb-constituent-codes-title">{{constituentCodes}}</div>
     </div>
     <div class="">
-      <a href="tel:843-234-1232">843-234-1232</a>
+      <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a>
     </div>
     <div class="">
-      <a href="http://website.com">Website</a>
+      <a href="{{website}}">Website</a>
     </div>
     <div class="fullrecord">
-      <a href="http://constituentURL">View full record</a>
+      <a target="_blank" href="{{constituentRecordUrl}}">View full record</a>
     </div>
     <hr class="">
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
+    {{#lastAction}}
     <h2>Last action</h2>
     <ul class="act_list">
       <li>
-        <span class="title">Meeting - Face to Face</span>
-        <span class="date">1/2/2015</span>
-        <span class="summary">Summary of action</span>
+        <span class="title">{{lastAction.type}}</span>
+        <span class="date">{{lastAction.date}}</span>
+        <span class="summary">{{lastAction.summary}}</span>
       </li>
     </ul>
+    {{/lastAction}}
+    {{#nextAction}}
     <h2>Next action</h2>
     <ul class="act_list">
       <li>
-        <span class="title">Meeting - Face to Face</span>
-        <span class="date">1/2/2015</span>
-        <span class="summary">Summary of action</span>
+        <span class="title">{{nextAction.type}}</span>
+        <span class="date">{{nextAction.date}}</span>
+        <span class="summary">{{nextAction.summary}}</span>
       </li>
     </ul>
+    {{/nextAction}}
     <hr>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
+    {{#lastNote}}
     <h2>Last note</h2>
     <ul class="act_list">
       <li>
-        <span class="title">Note Summary</span>
-        <span class="date">1/2/2015</span>
-        <span class="summary">Detail of the note.</span>
+        <span class="title">{{lastNote.type}}</span>
+        <span class="date">{{lastNote.date}}</span>
+        <span class="summary">{{lastNote.summary}}</span>
       </li>
     </ul>
+    {{/lastNote}}
   </div>
 </div>
-</body>
-</html>

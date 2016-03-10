@@ -8,7 +8,7 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
             
             threadView.addSidebarContentPanel({
                el: threadSidebars.get(threadView),
-               title: "Constituent Data",
+               title: "Blackbaud",
                iconUrl: chrome.runtime.getURL('bbicon.png') 
             });
         }
@@ -45,7 +45,28 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
                 loadedConstituents.push(possibleConstituents[i].name);
                 
                 showSidebar(threadView, {
-                    name: possibleConstituents[i].name
+                    name: possibleConstituents[i].name,
+                    constituentRecordUrl: "http://rexdev.blackbaud.com/constituents/280",
+                    phoneNumber: "843-234-1232",
+                    website: "http://blackbaud.com",
+                    spouseName: "Wendy Hernandez",
+                    spouseRecordUrl: "http://rexdev.blackbaud.com/constituents/410",
+                    constituentCodes: "Major Donor Prsopect, Board Chair",
+                    lastAction: {
+                        type: "Meeting - Face to Face",
+                        date: "1/2/2015",
+                        summary: "Summary of action"
+                    },
+                    nextAction: {
+                        type: "Meeting - Face to Face",
+                        date: "6/2/2015",
+                        summary: "Summary of action"
+                    },
+                    lastNote: {
+                        type: "Biographical",
+                        date: "3/7/2016",
+                        summary: "Test Note"
+                    }
                 });
             }
         }
