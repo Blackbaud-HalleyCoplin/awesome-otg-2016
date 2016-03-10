@@ -1,5 +1,7 @@
+var secret = 'pCgz53obuL0u7L8KbhNdjxEvxm5JwyK9t2yz2b5PDvs=';
+var client_id = '98E8f616-065B-4C33-AD07-A7B17025127C';
+
 function beginOauth() {
-    var client_id = '98E8f616-065B-4C33-AD07-A7B17025127C';
     var redirectUrl = chrome.identity.getRedirectURL('oauth2');
     var auth_url = "https://oauth2.sky.blackbaud.com/authorization?"+
         "client_id="+ client_id +
