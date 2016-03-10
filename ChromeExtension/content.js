@@ -1,5 +1,6 @@
 InboxSDK.load('1', 'Hello World!').then(function(sdk){
     var threadSidebars = new WeakMap();
+    var threadLoadedConstituents = new WeakMap();
     
     function showSidebar(threadView, constituentData) {
         if (!threadSidebars.has(threadView)) {
@@ -32,8 +33,20 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
         
         var threadView = messageView.getThreadView();
         
-        showSidebar(threadView, {
-            name: possibleConstituents[0].name
-        });
+        if (!threadLoadedConstituents.has(threadView)) {
+            threadLoadedConstituents.set(threadView, []);
+        }
+        
+        var loadedConstituents = threadLoadedConstituents.get(threadView);
+        
+        for (var i = 0;i<possibleConstituents.length;i++) {
+            if ($.inArray(possibleConstituents[i].name, loadedConstituents) === -1) {
+                loadedConstituents.push(possibleConstituents[i].name);
+                
+                showSidebar(threadView, {
+                    name: possibleConstituents[i].name
+                });
+            }
+        }
     });
 });
