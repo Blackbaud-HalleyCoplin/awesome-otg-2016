@@ -11,6 +11,7 @@ var oauth_base_url = 'https://oauth2.sky.blackbaud.com/';
 var oauth_token_url = oauth_base_url + 'token';
 var oauth_authorize_url = oauth_base_url + 'authorization';
 var auth_header = 'Basic ' + btoa(client_id + ':' + secret);
+var loginPromise;
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -24,42 +25,47 @@ chrome.runtime.onMessage.addListener(
 )
 
 function loginOAuth() {
-    return new Promise(function(resolve) {
-        var redirectUrl = chrome.identity.getRedirectURL('oauth2');
-        var auth_url = oauth_authorize_url + '?' +
-            "client_id="+ client_id +
-            "&response_type=code"+
-            "&redirect_uri="+redirectUrl+
-            "&state=abcdefg"
-        var authorization_code;
-        
-        chrome.identity.launchWebAuthFlow({"url" : auth_url,"interactive": true}, function (responseUrl) {
-            var search = responseUrl.replace(redirectUrl+'?', '');
-            var obj = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-            authorization_code = obj.code;
+    if (loginPromise) {
+        return loginPromise;
+    } else {    
+        loginPromise = new Promise(function(resolve) {
+            var redirectUrl = chrome.identity.getRedirectURL('oauth2');
+            var auth_url = oauth_authorize_url + '?' +
+                "client_id="+ client_id +
+                "&response_type=code"+
+                "&redirect_uri="+redirectUrl+
+                "&state=abcdefg"
+            var authorization_code;
             
-            $.ajax({
-                url: oauth_token_url,
-                type: 'POST',
-                headers: {
-                    Authorization: auth_header
-                },
-                data: {
-                    grant_type: 'authorization_code',
-                    code: authorization_code,
-                    redirect_uri: redirectUrl
-                }
-            }).then(function(data) {
-                access_token = data.access_token;
-                expires_in = data.expires_in;
-                refresh_token = data.refresh_token;
-                tenant_id = data.tenant_id;
-                tenant_name = data.tenant_name;
-                expires_on = Date.now() + (expires_in * 1000);
-                resolve();
+            chrome.identity.launchWebAuthFlow({"url" : auth_url,"interactive": true}, function (responseUrl) {
+                var search = responseUrl.replace(redirectUrl+'?', '');
+                var obj = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+                authorization_code = obj.code;
+                
+                $.ajax({
+                    url: oauth_token_url,
+                    type: 'POST',
+                    headers: {
+                        Authorization: auth_header
+                    },
+                    data: {
+                        grant_type: 'authorization_code',
+                        code: authorization_code,
+                        redirect_uri: redirectUrl
+                    }
+                }).then(function(data) {
+                    access_token = data.access_token;
+                    expires_in = data.expires_in;
+                    refresh_token = data.refresh_token;
+                    tenant_id = data.tenant_id;
+                    tenant_name = data.tenant_name;
+                    expires_on = Date.now() + (expires_in * 1000);
+                    resolve();
+                });
             });
         });
-    });
+        return loginPromise;
+    }
 }
 
 function refresh() {
