@@ -30,22 +30,6 @@
     </div>
     <div class="row">
     <div class="col-xs-12">
-        <h2>Last action</h2>
-        <ul class="act_list">
-        {{#lastAction}}
-        <li>
-            <span class="title">{{lastAction.type}}</span>
-            <span class="date">{{lastAction.date}}</span>
-            <span class="summary">{{lastAction.summary}}</span>
-        </li>
-        <input type="button" class="btn btn-default btn-xs btn-inbox" value="Mark as complete"></input>
-        {{/lastAction}}
-        {{^lastAction}}
-        <li>
-            <span class="summary">None</span>
-        </li>
-        {{/lastAction}}
-        </ul>
         <h2>Next action</h2>
         <ul class="act_list">
         {{#nextAction}}
@@ -61,6 +45,21 @@
             <span class="summary">None planned</span>
         </li>
         {{/nextAction}}
+        </ul>
+        <h2>Last action</h2>
+        <ul class="act_list">
+        {{#lastAction}}
+        <li>
+            <span class="title">{{lastAction.type}}</span>
+            <span class="date">{{lastAction.date}}</span>
+            <span class="summary">{{lastAction.summary}}</span>
+        </li>
+        {{/lastAction}}
+        {{^lastAction}}
+        <li>
+            <span class="summary">None</span>
+        </li>
+        {{/lastAction}}
         </ul>
         <hr class="rule_light">
     </div>

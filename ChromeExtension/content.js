@@ -132,17 +132,17 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                             
                             if (responses[2].actions.length > 0) {
                                 matchedConstituent.nextAction = {
-                                  type: responses[2].actions[0].category,
-                                  summary: "",
+                                  type: responses[2].actions[0].summary,
+                                  summary: responses[2].actions[0].description,
                                   date: new Date(responses[2].actions[0].date).toLocaleDateString()  
                                 };
                             }
                             
                             if (responses[2].actions.length > 1) {
                                 matchedConstituent.lastAction = {
-                                  type: responses[2].actions[responses[2].actions.length - 1].category,
-                                  summary: "",
-                                  date: new Date(responses[2].actions[responses[2].actions.length - 1].date).toLocaleDateString()  
+                                  type: responses[2].actions[1].summary,
+                                  summary: responses[2].actions[1].description,
+                                  date: new Date(responses[2].actions[1].date).toLocaleDateString()  
                                 };                                
                             }
                             
