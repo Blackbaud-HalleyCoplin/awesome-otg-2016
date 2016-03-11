@@ -18,7 +18,7 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
         });
     }
 
-    function get(url, params, headers) {
+    function getApi(url, params, headers) {
         return new Promise(function(resolve) {          
             chrome.runtime.sendMessage({get: {url: url, params: params, headers: headers}},
                 function(response) {
@@ -26,8 +26,9 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                 }
             );
         })
-
-        /*
+    }
+    
+    function get(url, params, headers) {
         return Promise.resolve(
             $.ajax({
                 url: url,
@@ -35,7 +36,7 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                 data: params,
                 headers: headers
             })
-        );*/
+        );
     }
     
     function populateConstituentSidebar(constituent, threadView)
@@ -89,7 +90,7 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                     searchText: possibleConstituents[i].name
                 });
                 
-                get("https://api.sky.blackbaud.com/constituent/constituents/search?searchText=" + searchParameters).then(function (data) {
+                getApi("https://api.sky.blackbaud.com/constituent/constituents/search?searchText=" + searchParameters).then(function (data) {
                     $.each(data.results, function (index, searchResult) {
                         if (searchResult.email === possibleConstituents[i].emailAddress) {
                             console.log(searchResult.id);
@@ -107,7 +108,7 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                 if (foundMatch)
                 {
                     // Get basic constituent information https://api.sky.blackbaud.com/constituent/constituents/{constituentId}
-                    get("https://api.sky.blackbaud.com/constituent/constituents/" + matchedConstituent.id).then(function (data) {
+                    getApi("https://api.sky.blackbaud.com/constituent/constituents/" + matchedConstituent.id).then(function (data) {
                         var obj = JSON.parse(data.results);
                         // UNCOMMENT THIS WHEN ACTUAL RESPONSE RECEIVED
                         //matchedConstituent.name = obj.name;
@@ -121,7 +122,7 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                     
                     matchedConstituent.constituentCodes = [];
                     // Get Constituent Codes https://api.sky.blackbaud.com/constituent/constituents/{constituentId}/constituentcodes
-                    get("https://api.sky.blackbaud.com/constituent/constituents/" + matchedConstituent.id + "/constituentcodes").then(function(data) {
+                    getApi("https://api.sky.blackbaud.com/constituent/constituents/" + matchedConstituent.id + "/constituentcodes").then(function(data) {
                         $.each(data.results, function(index, constitCode) {
                             matchedConstituent.constituentCodes.push(constitCode.description);
                         })

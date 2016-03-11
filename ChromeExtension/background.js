@@ -3,7 +3,6 @@ var client_id = '98E8f616-065B-4C33-AD07-A7B17025127C';
 var api_key = 'f95e485fe5964affa0152d23be3aefe8';
 var access_token;
 var refresh_token;
-var authorization_code;
 var expires_in;
 var tenant_id;
 var tenant_name;
@@ -32,9 +31,10 @@ function loginOAuth() {
             "&response_type=code"+
             "&redirect_uri="+redirectUrl+
             "&state=abcdefg"
+        var authorization_code;
         
         chrome.identity.launchWebAuthFlow({"url" : auth_url,"interactive": true}, function (responseUrl) {
-            var search = responseurl.replace(redirectUrl+'?', '');
+            var search = responseUrl.replace(redirectUrl+'?', '');
             var obj = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
             authorization_code = obj.code;
             
