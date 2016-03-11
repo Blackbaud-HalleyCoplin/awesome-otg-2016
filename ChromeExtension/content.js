@@ -101,8 +101,12 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                         var id = data.results[0].id;
                         
                         Promise.all(
-                            [getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id),
-                            getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id + "/constituentcodes")]
+                            [
+                                getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id),
+                                getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id + "/constituentcodes"),
+                                getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id + "/actions"),
+                                getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id + "/notes")
+                            ]
                         ).then(function (responses) {
                             var matchedConstituent = {};
                             
@@ -121,6 +125,34 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                                 constituentCodeDescriptions.push(constitCode.description);
                             });
                             matchedConstituent.constituentCodes = constituentCodeDescriptions.join(", ");
+                            
+                            function getStringForFuzzyDate(fuzzyDate) {
+                                return fuzzyDate.m + "/" + fuzzyDate.d + "/" + fuzzyDate.y; 
+                            }
+                            
+                            if (responses[2].actions.length > 0) {
+                                matchedConstituent.nextAction = {
+                                  type: responses[2].actions[0].category,
+                                  summary: "",
+                                  date: new Date(responses[2].actions[0].date).toLocaleDateString()  
+                                };
+                            }
+                            
+                            if (responses[2].actions.length > 1) {
+                                matchedConstituent.lastAction = {
+                                  type: responses[2].actions[responses[2].actions.length - 1].category,
+                                  summary: "",
+                                  date: new Date(responses[2].actions[responses[2].actions.length - 1].date).toLocaleDateString()  
+                                };                                
+                            }
+                            
+                            if (responses[3].notes.length > 1) {
+                                matchedConstituent.lastNote = {
+                                   type: responses[3].notes[0].type,
+                                   date: getStringForFuzzyDate(responses[3].notes[0].date),
+                                   summary: responses[3].notes[0].summary
+                                };
+                            }
                             
                             showSidebar(threadView, matchedConstituent);
                         });
