@@ -4,14 +4,12 @@
 .aIf-aLe .aDG, .aAy.J-KU-JW.aAy.aIf-aLe .aKo, .aAy.J-KU-KO.aAy.aIf-aLe .aKo { background-color: none !important; height: 0; }
 .aKo { height: 0; }
 table.aKk .inboxsdk__contentTabContainer .inboxsdk__tab:first-child .aAy[role=tab], .aAy, .J-KU-KO .aAy { border: 0; }
-.J-KU-Jg-K9.aAA div.J-KU-KO.aAy {
-  background-color: #f9f8f8 !important;
-
-}
+.J-KU-Jg-K9.aAA div.J-KU-KO.aAy { background-color: #f9f8f8 !important; }
 table.aKk .inboxsdk__contentTabContainer .inboxsdk__tab .aAy[role=tab] {
   border-bottom: 2px solid #f4f5f6 !important;
   height: 22px !important;
 }
+.inboxsdk__sidebar .inboxsdk__contentPanelContainer { max-width: 250px !important; }
 .aAy, .J-KU-KO .aAy { border: 0;}
 .inboxsdk__contentPanelContainer_contentContainer { border-bottom: 0 !important; }
 
