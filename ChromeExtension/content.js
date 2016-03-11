@@ -17,7 +17,7 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
             threadSidebars.get(threadView).innerHTML = threadSidebars.get(threadView).innerHTML + Mustache.render(html, constituentData); 
         });
     }
-
+/*
     function get(url, params, headers) {
         return Promise.resolve(
             $.ajax({
@@ -28,7 +28,7 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
             })
         );
     }
-    
+*/    
     sdk.Conversations.registerMessageViewHandler(function(messageView) {
         var possibleConstituents = messageView.getRecipients();
         possibleConstituents.push(messageView.getSender());
