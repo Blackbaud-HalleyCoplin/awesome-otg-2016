@@ -92,31 +92,33 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                 
                 getApi("https://api.sky.blackbaud.com/constituent/constituents/search?searchText=" + searchParameters).then(function (data) {
                     $.each(data.results, function (index, searchResult) {
-                        if (searchResult.email === possibleConstituents[i].emailAddress) {
+                        //if (searchResult.email === possibleConstituents[i].emailAddress) {
                             console.log(searchResult.id);
                             matchedConstituent.id = searchResult.id;
                             foundMatch = true;
-                        }
+                            
+                        //}
                     });
                 });
                 
                 // FOR TESTING
-                matchedConstituent.id = 280;
-                foundMatch = true;
-                matchedConstituent.name = possibleConstituents[i].name;
+                // matchedConstituent.id = 280;
+                // foundMatch = true;
+                // matchedConstituent.name = possibleConstituents[i].name;
                 
                 if (foundMatch)
                 {
+                    alert("Found match!");
                     // Get basic constituent information https://api.sky.blackbaud.com/constituent/constituents/{constituentId}
                     getApi("https://api.sky.blackbaud.com/constituent/constituents/" + matchedConstituent.id).then(function (data) {
                         var obj = JSON.parse(data.results);
                         // UNCOMMENT THIS WHEN ACTUAL RESPONSE RECEIVED
-                        //matchedConstituent.name = obj.name;
-                        matchedConstituent.constituentRecordUrl = "http://rexdev.blackbaud.com/constituents/" + matchedConstituent.id;
+                        matchedConstituent.name = obj.name;
+                        matchedConstituent.constituentRecordUrl = "http://renxt.blackbaud.com/constituents/" + matchedConstituent.id;
                         matchedConstituent.phoneNumber = obj.phone.number;
                         matchedConstituent.website = obj.online_presence.address;
                         matchedConstituent.spouseName = obj.spouse.first + " " + obj.spouse.last;
-                        matchedConstituent.spouseRecordUrl = "http://rexdev.blackbaud.com/constituents/" + obj.spouse.id;
+                        matchedConstituent.spouseRecordUrl = "http://renxt.blackbaud.com/constituents/" + obj.spouse.id;
                         
                     })
                     
@@ -135,11 +137,11 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                 {
                     showSidebar(threadView, {
                         name: possibleConstituents[i].name,
-                        constituentRecordUrl: "http://rexdev.blackbaud.com/constituents/280",
+                        constituentRecordUrl: "http://renxt.blackbaud.com/constituents/280",
                         phoneNumber: "843-234-1232",
                         website: "http://blackbaud.com",
                         spouseName: "Wendy Hernandez",
-                        spouseRecordUrl: "http://rexdev.blackbaud.com/constituents/410",
+                        spouseRecordUrl: "http://renxt.blackbaud.com/constituents/410",
                         constituentCodes: "Major Donor Prospect, Board Chair",
                         lastAction: {
                             type: "Meeting - Face to Face",
