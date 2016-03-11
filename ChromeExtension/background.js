@@ -23,10 +23,10 @@ chrome.runtime.onInstalled.addListener(function() {
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.get) {
-            get(get.url, get.params, get.headers).
-            then(function(data) {
+            get(request.get.url, request.get.params, request.get.headers).then(function(data) {
                 sendResponse(data);
             });
+            return true;
         }
     }
 );
