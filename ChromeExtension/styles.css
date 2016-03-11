@@ -1,8 +1,19 @@
 .inboxsdk__tab_title {
-    font-weight: bold;
+    font-weight: normal;
 }
+.aIf-aLe .aDG, .aAy.J-KU-JW.aAy.aIf-aLe .aKo, .aAy.J-KU-KO.aAy.aIf-aLe .aKo { background-color: none; }
+.J-KU-Jg-K9.aAA .J-KU-KO.aAy {
+  background-color: #f9f8f8;
+  border-bottom: 1px solid #f4f5f6;
+}
+.aAy, .J-KU-KO .aAy { border: 0;}
 
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,400italic|Oswald:300,400,700");
+
+body, .inboxsdk__sidebar .inboxsdk__contentPanelContainer {
+  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
 
 .bb-constituent-sidebar h1,
 .bb-constituent-sidebar h2,
@@ -46,6 +57,9 @@
     font-size: 28px
 }
 
+.bb-constituent-sidebar .bb-constituent-codes-title {
+  font-weight: 600;
+}
 .bb-constituent-sidebar .act_list {
   list-style: none;
   margin: 0;
