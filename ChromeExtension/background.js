@@ -13,14 +13,16 @@ var oauth_token_url = oauth_base_url + 'token';
 var oauth_authorize_url = oauth_base_url + 'authorization';
 var auth_header = 'Basic ' + btoa(client_id + ':' + secret);
 
-function post(url, content) {
-    return Promise.resolve(
-        $.ajax({
-            url: url,
-            type: "POST"
-        })
-    );
-}
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.get) {
+            get(get.url, get.params, get.headers).
+            then(function(data) {
+                sendResponse(data);
+            });
+        }
+    }
+)
 
 function loginOAuth() {
     return new Promise(function(resolve) {
@@ -62,39 +64,37 @@ function loginOAuth() {
 
 function refresh() {
 
-    var refreshPromise = new Promise(function(resolve) {    
-        var dtNow = new Date();
-        
-        if (dtNow >= expires_on) {
-            // refresh token
-            console.log('token expired');
-            $.ajax({
-                url: oauth_token_url,
-                type: 'POST',
-                headers: {
-                    Authorization: auth_header
-                },
-                data: {
-                    grant_type: 'refresh_token',
-                    refresh_token: refresh_token
-                }
-            }).then(function (data) {
-                access_token = data.access_token;
-                expires_in = data.expires_in;
-                expires_on = Date.now() + (expires_in*1000);
-                refresh_token = data.refresh_token;
-                resolve();
-            });
-        }
-        else {
-            return resolve();
-        }
-    });
-    
     if(!access_token) {
         return loginOAuth();
     } else {
-        return refreshPromise;
+        return new Promise(function(resolve) {    
+            var dtNow = new Date();
+            
+            if (dtNow >= expires_on) {
+                // refresh token
+                console.log('token expired');
+                $.ajax({
+                    url: oauth_token_url,
+                    type: 'POST',
+                    headers: {
+                        Authorization: auth_header
+                    },
+                    data: {
+                        grant_type: 'refresh_token',
+                        refresh_token: refresh_token
+                    }
+                }).then(function (data) {
+                    access_token = data.access_token;
+                    expires_in = data.expires_in;
+                    expires_on = Date.now() + (expires_in*1000);
+                    refresh_token = data.refresh_token;
+                    resolve();
+                });
+            }
+            else {
+                return resolve();
+            }
+        });
     }
 }
 

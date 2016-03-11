@@ -8,11 +8,15 @@
         "https://mail.google.com/*",
         "https://inbox.google.com/*"
       ],
-      "js": ["inboxsdk.js","content.js", "mustache.min.js", "jquery-2.2.1.min.js", "background.js"],
+      "js": ["inboxsdk.js","content.js", "mustache.min.js", "jquery-2.2.1.min.js"],
       "css": ["styles.css"],
       "run_at": "document_end"
     }
   ],
+  "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+  },
   "permissions": [
     "https://mail.google.com/",
     "https://inbox.google.com/",

@@ -17,8 +17,17 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
             threadSidebars.get(threadView).innerHTML = threadSidebars.get(threadView).innerHTML + Mustache.render(html, constituentData); 
         });
     }
-/*
+
     function get(url, params, headers) {
+        return new Promise(function(resolve) {          
+            chrome.runtime.sendMessage({get: {url: url, params: params, headers: headers}},
+                function(response) {
+                    resolve(response);
+                }
+            );
+        })
+
+        /*
         return Promise.resolve(
             $.ajax({
                 url: url,
@@ -26,9 +35,9 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
                 data: params,
                 headers: headers
             })
-        );
+        );*/
     }
-*/    
+
     sdk.Conversations.registerMessageViewHandler(function(messageView) {
         var possibleConstituents = messageView.getRecipients();
         possibleConstituents.push(messageView.getSender());
