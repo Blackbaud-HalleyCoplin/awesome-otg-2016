@@ -18,11 +18,13 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
         });
     }
 
-    function get(url) {
+    function get(url, params, headers) {
         return Promise.resolve(
             $.ajax({
                 url: url,
-                type: "GET"
+                type: "GET",
+                data: params,
+                headers: headers
             })
         );
     }
@@ -41,8 +43,20 @@ InboxSDK.load('1', 'Hello World!').then(function(sdk){
         var usersEmail = sdk.User.getEmailAddress();
         
         for (var i = 0;i<possibleConstituents.length;i++) {
-            if ($.inArray(possibleConstituents[i].name, loadedConstituents) === -1 && usersEmail !== possibleConstituents[i].emailAddress) {
-                loadedConstituents.push(possibleConstituents[i].name);
+            if ($.inArray(possibleConstituents[i].emailAddress, loadedConstituents) === -1 && usersEmail !== possibleConstituents[i].emailAddress) {
+                loadedConstituents.push(possibleConstituents[i].emailAddress);
+                
+                var searchParameters = $.param({
+                    searchText: possibleConstituents[i].name
+                });
+                
+                get("https://api.sky.blackbaud.com/constituent/constituents/search?searchText=" + searchParameters).then(function (data) {
+                    $.each(data.results, function (index, searchResult) {
+                        if (searchResult.email === possibleConstituents[i].emailAddress) {
+                            console.log(searchResult.id);
+                        }
+                    });
+                });
                 
                 showSidebar(threadView, {
                     name: possibleConstituents[i].name,

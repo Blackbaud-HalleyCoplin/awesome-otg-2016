@@ -15,7 +15,8 @@
   ],
   "permissions": [
     "https://mail.google.com/",
-    "https://inbox.google.com/"
+    "https://inbox.google.com/",
+    "https://api.sky.blackbaud.com/"
   ],
   "web_accessible_resources": [
     "bbicon.png",
