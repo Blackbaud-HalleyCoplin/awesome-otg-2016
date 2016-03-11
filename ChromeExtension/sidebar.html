@@ -38,6 +38,7 @@
             <span class="date">{{lastAction.date}}</span>
             <span class="summary">{{lastAction.summary}}</span>
         </li>
+        <input type="button" class="btn btn-default btn-xs btn-inbox" value="Mark as complete"></input>
         {{/lastAction}}
         {{^lastAction}}
         <li>
@@ -53,6 +54,7 @@
             <span class="date">{{nextAction.date}}</span>
             <span class="summary">{{nextAction.summary}}</span>
         </li>
+        <input type="button" class="btn btn-default btn-xs btn-inbox" value="Mark as complete"></input>
         {{/nextAction}}
         {{^nextAction}}
         <li>
