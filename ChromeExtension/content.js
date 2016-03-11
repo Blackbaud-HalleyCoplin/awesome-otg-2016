@@ -19,6 +19,15 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
     }
 
     function get(url, params, headers) {
+        return new Promise(function(resolve) {          
+            chrome.runtime.sendMessage({get: {url: url, params: params, headers: headers}},
+                function(response) {
+                    resolve(response);
+                }
+            );
+        })
+
+        /*
         return Promise.resolve(
             $.ajax({
                 url: url,
@@ -26,7 +35,7 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                 data: params,
                 headers: headers
             })
-        );
+        );*/
     }
     
     function populateConstituentSidebar(constituent, threadView)
@@ -56,7 +65,7 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
             }
         });
     }
-    
+
     sdk.Conversations.registerMessageViewHandler(function(messageView) {
         var possibleConstituents = messageView.getRecipients();
         possibleConstituents.push(messageView.getSender());
