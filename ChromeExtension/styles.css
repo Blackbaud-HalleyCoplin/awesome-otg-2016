@@ -1,18 +1,26 @@
 .inboxsdk__tab_title {
-    font-weight: normal;
+    font-weight: bold;
 }
-.aIf-aLe .aDG, .aAy.J-KU-JW.aAy.aIf-aLe .aKo, .aAy.J-KU-KO.aAy.aIf-aLe .aKo { background-color: none; }
-.J-KU-Jg-K9.aAA .J-KU-KO.aAy {
-  background-color: #f9f8f8;
-  border-bottom: 1px solid #f4f5f6;
+.aIf-aLe .aDG, .aAy.J-KU-JW.aAy.aIf-aLe .aKo, .aAy.J-KU-KO.aAy.aIf-aLe .aKo { background-color: none !important; height: 0; }
+.aKo { height: 0; }
+table.aKk .inboxsdk__contentTabContainer .inboxsdk__tab:first-child .aAy[role=tab], .aAy, .J-KU-KO .aAy { border: 0; }
+.J-KU-Jg-K9.aAA div.J-KU-KO.aAy {
+  background-color: #f9f8f8 !important;
+
+}
+table.aKk .inboxsdk__contentTabContainer .inboxsdk__tab .aAy[role=tab] {
+  border-bottom: 2px solid #f4f5f6 !important;
+  height: 22px !important;
 }
 .aAy, .J-KU-KO .aAy { border: 0;}
+.inboxsdk__contentPanelContainer_contentContainer { border-bottom: 0 !important; }
 
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,400italic|Oswald:300,400,700");
 
-body, .inboxsdk__sidebar .inboxsdk__contentPanelContainer {
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+.inboxsdk__sidebar .inboxsdk__contentPanelContainer, .inboxsdk__sidebar .inboxsdk__contentPanelContainer .bb-constituent-sidebar{
+  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .bb-constituent-sidebar h1,
@@ -20,45 +28,62 @@ body, .inboxsdk__sidebar .inboxsdk__contentPanelContainer {
 .bb-constituent-sidebar h3,
 .bb-constituent-sidebar h4,
 .bb-constituent-sidebar h5,
-.bb-constituent-sidebar h6,
-.bb-constituent-sidebar .h1,
-.bb-constituent-sidebar .h2,
-.bb-constituent-sidebar .h3,
-.bb-constituent-sidebar .h4,
-.bb-constituent-sidebar .h5,
-.bb-constituent-sidebar .h6 {
+.bb-constituent-sidebar h6 {
     font-weight: 100;
     font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .bb-constituent-sidebar h2,
 .bb-constituent-sidebar .h2 {
-    font-size: 16px;
-    font-weight: 600;
-}
-.bb-constituent-sidebar h3,
-.bb-constituent-sidebar .h3 {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
 }
 
-.bb-constituent-sidebar h1,
-.bb-constituent-sidebar .h1,
-.bb-constituent-sidebar h2,
-.bb-constituent-sidebar .h2,
-.bb-constituent-sidebar h3,
-.bb-constituent-sidebar .h3 {
-    margin-top: 18px;
-    margin-bottom: 9px
+.bb-constituent-sidebar h1 {
+    margin-top: 12px;
+    margin-bottom: 3px
+}
+.bb-constituent-sidebar h2 {
+    margin-top: 15px;
+    margin-bottom: 6px
+}
+.bb-constituent-sidebar .row h2:first-of-type {
+    margin-top: 0;
+    margin-bottom: 6px;
 }
 
 .bb-constituent-sidebar h1,
 .bb-constituent-sidebar .h1 {
     font-family: "Oswald", sans-serif;
-    font-size: 28px
+    font-size: 32px
+}
+.bb-constituent-sidebar a {
+    color: #1c84c6;
+    text-decoration: none
+}
+.bb-constituent-sidebar a:hover,
+.bb-constituent-sidebar a:focus {
+    color: #135783;
+    text-decoration: underline
+}
+.bb-constituent-sidebar a:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px
 }
 
+.bb-constituent-sidebar .constituent-summary-info {
+  font-size: 12px;
+}
 .bb-constituent-sidebar .bb-constituent-codes-title {
   font-weight: 600;
+  margin: .5rem 0;
+}
+.bb-constituent-sidebar .contact_items {
+  font-size: 12px;
+  margin-bottom: .25rem;
+}
+.bb-constituent-sidebar .full_record {
+  margin: .5rem 0 0;
 }
 .bb-constituent-sidebar .act_list {
   list-style: none;
@@ -66,14 +91,28 @@ body, .inboxsdk__sidebar .inboxsdk__contentPanelContainer {
   padding: 0;
 }
 .bb-constituent-sidebar .act_list .title {
-
+  font-weight: 600;
+  margin-bottom: .1rem;
 }
 .bb-constituent-sidebar .act_list .date {
   font-size: 12px;
+
 }
 .bb-constituent-sidebar .act_list .summary {
-
+  margin-top: .25rem;
 }
 .bb-constituent-sidebar .act_list li span {
   display: block;
+}
+.rule_heavy {
+  border: 0;
+  border-top: 2px solid #E7EAEC;
+  height: 0;
+  margin: .75rem 0;
+}
+.rule_light {
+  border: 0;
+  border-top: 1px dotted #ccc;
+  height: 0;
+  margin: .75rem 0;
 }
