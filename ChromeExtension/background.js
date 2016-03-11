@@ -27,16 +27,6 @@ chrome.runtime.onMessage.addListener(
                 sendResponse(data);
             });
             return true;
-        } else if (request.post) {
-            post(request.post.url, request.post.params, request.post.headers).then(function(data) {
-                sendResponse(data);
-            });
-            return true;
-        } else if (request.put) {
-            get(request.put.url, request.put.params, request.put.headers).then(function(data) {
-                sendResponse(data);
-            });
-            return true;
         }
     }
 );
@@ -180,13 +170,13 @@ function validateKeys() {
     });
 }
 
-function send(method, url, params, headers) {
+function get(url, params, headers) {
     return validateKeys().then(function() {
-        return getStorage(access_token_key);
+        return getStorage(access_token_key)
     }).then(function(token) {
         return Promise.resolve($.ajax({
             url: url,
-            type: method,
+            type: "GET",
             data: params,
             headers: $.extend({
                 Authorization: 'Bearer ' + token,
@@ -194,16 +184,4 @@ function send(method, url, params, headers) {
             }, headers)
         }));
     });
-}
-
-function get(url, params, headers) {
-    return send("GET", url, params, headers);
-}
-
-function post(url, params, headers) {
-    return send("POST", url, params, headers);
-}
-
-function put(url, params, headers) {
-    return send("PUT", url, params, headers);
 }
