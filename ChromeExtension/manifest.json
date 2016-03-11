@@ -23,7 +23,8 @@
     "https://api.sky.blackbaud.com/",
     "https://oauth2.sky.blackbaud.com/*",
     "identity",
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "web_accessible_resources": [
     "bbicon.png",
