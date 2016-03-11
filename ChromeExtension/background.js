@@ -23,7 +23,7 @@ function post(url, content) {
 }
 
 function loginOAuth() {
-    return Promise.resolve(function() {
+    return new Promise(function(resolve) {
         var redirectUrl = chrome.identity.getRedirectURL('oauth2');
         var auth_url = oauth_authorize_url + '?' +
             "client_id="+ client_id +
@@ -54,6 +54,7 @@ function loginOAuth() {
                 tenant_id = data.tenant_id;
                 tenant_name = data.tenant_name;
                 expires_on = Date.now() + (expires_in * 1000);
+                resolve();
             });
         });
     });
@@ -61,33 +62,32 @@ function loginOAuth() {
 
 function refresh() {
 
-    var refreshPromise = Promise.resolve(function() {    
+    var refreshPromise = new Promise(function(resolve) {    
         var dtNow = new Date();
         
         if (dtNow >= expires_on) {
             // refresh token
             console.log('token expired');
-            return Promise.resolve(
-                $.ajax({
-                    url: oauth_token_url,
-                    type: 'POST',
-                    headers: {
-                        Authorization: auth_header
-                    },
-                    data: {
-                        grant_type: 'refresh_token',
-                        refresh_token: refresh_token
-                    }
-                }).then(function (data) {
-                    access_token = data.access_token;
-                    expires_in = data.expires_in;
-                    expires_on = Date.now() + (expires_in*1000);
-                    refresh_token = data.refresh_token;
-                })
-            );
+            $.ajax({
+                url: oauth_token_url,
+                type: 'POST',
+                headers: {
+                    Authorization: auth_header
+                },
+                data: {
+                    grant_type: 'refresh_token',
+                    refresh_token: refresh_token
+                }
+            }).then(function (data) {
+                access_token = data.access_token;
+                expires_in = data.expires_in;
+                expires_on = Date.now() + (expires_in*1000);
+                refresh_token = data.refresh_token;
+                resolve();
+            });
         }
         else {
-            return Promise.resolve();
+            return resolve();
         }
     });
     
