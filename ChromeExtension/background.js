@@ -11,12 +11,13 @@ var secret = 'pCgz53obuL0u7L8KbhNdjxEvxm5JwyK9t2yz2b5PDvs=',
     tenant_id_key = "blackbaud.nxt.gmail.tenant_id",
     tenant_name_key = "blackbaud.nxt.gmail.tenant_name",
     loginPromise,
-    refreshPromise;
+    refreshPromise,
+    myStorage = {};
 
 chrome.runtime.onInstalled.addListener(function() {
     // clear any failed promises.
-    loginPromise = null;
-    refreshPromise = null; 
+    delete loginPromise;
+    delete refreshPromise; 
 });
 
 chrome.runtime.onMessage.addListener(
@@ -28,21 +29,31 @@ chrome.runtime.onMessage.addListener(
             });
         }
     }
-)
+);
 
 function getStorage(key) {
+    //return Promise.resolve(myStorage.key);
+    
     return new Promise(function(resolve) {
         chrome.storage.local.get(key, function(items) {
-            var item;
-            if(items.key) {
-                item = items.key;
+            if(Array.isArray(key)) {
+                resolve(items);
+            } else {
+                var item;
+                if(items[key]) {
+                    item = items[key];
+                }
+                resolve(item);
             }
-            resolve(item);
         });
     });
+    
 }
 
 function setStorage(key, value) {
+    //myStorage[key] = value;
+    //return Promise.resolve();
+    
     var item = {};
     item[key] = value;
     return new Promise(function(resolve) {
@@ -50,6 +61,7 @@ function setStorage(key, value) {
             resolve();
         });
     });
+    
 }
 
 function storeTokens(data) {
@@ -75,7 +87,7 @@ function loginOAuth() {
             var obj = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
             authorization_code = obj.code;
             
-            $.ajax({
+            Promise.resolve($.ajax({
                 url: oauth_token_url,
                 type: 'POST',
                 headers: {
@@ -86,7 +98,7 @@ function loginOAuth() {
                     code: authorization_code,
                     redirect_uri: redirectUrl
                 }
-            }).then(function(data) {
+            })).then(function(data) {
                 var p = [];
                 p.push(storeTokens(data));
                 p.push(setStorage(tenant_id_key, data.tenant_id));
@@ -107,33 +119,37 @@ function loginOAuth() {
 }
 
 function refresh() {
-    refreshPromise = refreshPromise || new Promise(function(resolve) {    
-        var dtNow = new Date();
-        
-        if (dtNow >= expires_on) {
-            // refresh token
-            console.log('token expired');
-            $.ajax({
-                url: oauth_token_url,
-                type: 'POST',
-                headers: {
-                    Authorization: auth_header
-                },
-                data: {
-                    grant_type: 'refresh_token',
-                    refresh_token: refresh_token
-                }
-            }).then(function (data) {
-                storeTokens(data).then(function() {
-                    refreshPromise = null;
-                    resolve();
+    refreshPromise = refreshPromise || new Promise(function(resolve) {
+        getStorage([expires_key, refresh_token_key]).then(function(values) {
+            var dtNow = new Date(),
+                dtExpires = new Date(values.expires_on),
+                refreshToken = values.refresh_token;
+            
+            if (dtNow >= dtExpires) {
+                // refresh token
+                console.log('token expired');
+                Promise.resolve($.ajax({
+                    url: oauth_token_url,
+                    type: 'POST',
+                    headers: {
+                        Authorization: auth_header
+                    },
+                    data: {
+                        grant_type: 'refresh_token',
+                        refresh_token: refresh_token
+                    }
+                })).then(function (data) {
+                    storeTokens(data).then(function() {
+                        refreshPromise = null;
+                        resolve();
+                    });
                 });
-            });
-        }
-        else {
-            refreshPromise = null;
-            resolve();
-        }
+            }
+            else {
+                refreshPromise = null;
+                resolve();
+            }
+        });
     });
 
     refreshPromise.catch(function() {
@@ -155,10 +171,10 @@ function validateKeys() {
 }
 
 function get(url, params, headers) {
-    return validateKeys().
-    then(function() {return getStorage(access_token_key)}).
-    then(function(token) {
-        return $.ajax({
+    return validateKeys().then(function() {
+        return getStorage(access_token_key)
+    }).then(function(token) {
+        return Promise.resolve($.ajax({
             url: url,
             type: "GET",
             data: params,
@@ -166,6 +182,6 @@ function get(url, params, headers) {
                 Authorization: 'Bearer ' + token,
                 'bb-api-subscription-key': api_key
             }, headers)
-        });
+        }));
     });
 }
