@@ -20,7 +20,14 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
 
     function getApi(url, params, headers) {
         return new Promise(function(resolve) {          
-            chrome.runtime.sendMessage({get: {url: url, params: params, headers: headers}},
+            chrome.runtime.sendMessage(
+                {
+                    get: {
+                        url: url, 
+                        params: params,
+                        headers: headers
+                    }
+                },
                 function(response) {
                     resolve(response);
                 }
@@ -79,7 +86,6 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
         
         var loadedConstituents = threadLoadedConstituents.get(threadView);
         var usersEmail = sdk.User.getEmailAddress();
-        var matchedConstituent = {};
         var foundMatch = false;
         
         for (var i = 0;i<possibleConstituents.length;i++) {
@@ -90,77 +96,36 @@ InboxSDK.load('1.0', 'sdk_Sky-Integration_809ded04d4').then(function(sdk){
                     searchText: possibleConstituents[i].name
                 });
                 
-                getApi("https://api.sky.blackbaud.com/constituent/constituents/search?searchText=" + searchParameters).then(function (data) {
-                    $.each(data.results, function (index, searchResult) {
-                        //if (searchResult.email === possibleConstituents[i].emailAddress) {
-                            console.log(searchResult.id);
-                            matchedConstituent.id = searchResult.id;
-                            foundMatch = true;
-                            
-                        //}
-                    });
-                });
-                
-                // FOR TESTING
-                // matchedConstituent.id = 280;
-                // foundMatch = true;
-                // matchedConstituent.name = possibleConstituents[i].name;
-                
-                if (foundMatch)
-                {
-                    alert("Found match!");
-                    // Get basic constituent information https://api.sky.blackbaud.com/constituent/constituents/{constituentId}
-                    getApi("https://api.sky.blackbaud.com/constituent/constituents/" + matchedConstituent.id).then(function (data) {
-                        var obj = JSON.parse(data.results);
-                        // UNCOMMENT THIS WHEN ACTUAL RESPONSE RECEIVED
-                        matchedConstituent.name = obj.name;
-                        matchedConstituent.constituentRecordUrl = "http://renxt.blackbaud.com/constituents/" + matchedConstituent.id;
-                        matchedConstituent.phoneNumber = obj.phone.number;
-                        matchedConstituent.website = obj.online_presence.address;
-                        matchedConstituent.spouseName = obj.spouse.first + " " + obj.spouse.last;
-                        matchedConstituent.spouseRecordUrl = "http://renxt.blackbaud.com/constituents/" + obj.spouse.id;
+                getApi("https://api.sky.blackbaud.com/constituent/constituents/search?" + searchParameters).then(function (data) {
+                    if (data.results.length > 0) {
+                        var id = data.results[0].id;
                         
-                    })
-                    
-                    matchedConstituent.constituentCodes = [];
-                    // Get Constituent Codes https://api.sky.blackbaud.com/constituent/constituents/{constituentId}/constituentcodes
-                    getApi("https://api.sky.blackbaud.com/constituent/constituents/" + matchedConstituent.id + "/constituentcodes").then(function(data) {
-                        $.each(data.results, function(index, constitCode) {
-                            matchedConstituent.constituentCodes.push(constitCode.description);
-                        })
-                    })
-                    
-                    populateConstituentSidebar(matchedConstituent, threadView);
-                }
-                
-                else
-                {
-                    showSidebar(threadView, {
-                        name: possibleConstituents[i].name,
-                        constituentRecordUrl: "http://renxt.blackbaud.com/constituents/280",
-                        phoneNumber: "843-234-1232",
-                        website: "http://blackbaud.com",
-                        spouseName: "Wendy Hernandez",
-                        spouseRecordUrl: "http://renxt.blackbaud.com/constituents/410",
-                        constituentCodes: "Major Donor Prospect, Board Chair",
-                        lastAction: {
-                            type: "Meeting - Face to Face",
-                            date: "1/2/2015",
-                            summary: "Summary of action"
-                        },
-                        nextAction: {
-                            type: "Meeting - Face to Face",
-                            date: "6/2/2015",
-                            summary: "Summary of action"
-                        },
-                        lastNote: {
-                            type: "Biographical",
-                            date: "3/7/2016",
-                            summary: "Test Note"
-                        }
-                    });
-                }
-                
+                        Promise.all(
+                            [getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id),
+                            getApi("https://api.sky.blackbaud.com/constituent/constituents/" + id + "/constituentcodes")]
+                        ).then(function (responses) {
+                            var matchedConstituent = {};
+                            
+                            matchedConstituent.name = responses[0].name;
+                            matchedConstituent.constituentRecordUrl = "https://renxt.blackbaud.com/constituents/" + id;
+                            matchedConstituent.phoneNumber = responses[0].phone.number;
+                            matchedConstituent.website = responses[0].online_presence.address;
+                            
+                            if (responses[0].spouse) {
+                                matchedConstituent.spouseName = responses[0].spouse.first + " " + responses[0].spouse.last;                        
+                                matchedConstituent.spouseRecordUrl = "https://renxt.blackbaud.com/constituents/" + responses[0].spouse.id;
+                            }
+                            
+                            var constituentCodeDescriptions = [];
+                            $.each(responses[1].constituent_codes, function(index, constitCode) {
+                                constituentCodeDescriptions.push(constitCode.description);
+                            });
+                            matchedConstituent.constituentCodes = constituentCodeDescriptions.join(", ");
+                            
+                            showSidebar(threadView, matchedConstituent);
+                        });
+                    }
+                });     
             }
         }
     });
